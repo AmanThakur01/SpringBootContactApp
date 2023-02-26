@@ -6,7 +6,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 public class BaseDao {
 	@Autowired
-	NamedParameterJdbcTemplate npjt;
+	public NamedParameterJdbcTemplate npjt;
 	@Autowired
-	JdbcTemplate jt;
+	public JdbcTemplate jt;
 }
