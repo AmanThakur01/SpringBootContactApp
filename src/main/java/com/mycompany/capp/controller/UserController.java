@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -97,11 +98,39 @@ public class UserController {
 	
 	@GetMapping(value = { "/user/dashboard" })
 	public String userDashboard(HttpSession session) {
-		return "user_dashboard";// html
+		return "user_dashboard";// html`
 	}
 	
 	@GetMapping(value = { "/admin/dashboard" })
-	public String adminDashboard(HttpSession session) {
+	public String adminDashboard(Model m) {
+		
+		m.addAttribute("userList", userService.findAll());
+		return "admin_dashboard";// html
+	}
+	@GetMapping(value = { "/admin/user/active/{userId}" })
+	public String activateUser(@PathVariable Integer userId, Model m) {
+		
+		userService.changeLoginStatus(userId,userService.LOGIN_STATUS_ACTIVE);
+		return "redirect:/admin/dashboard?act=ac";
+	}
+	@GetMapping(value = { "/admin/user/block/{userId}" })
+	public String blockUser(@PathVariable Integer userId, Model m) {
+		
+		userService.changeLoginStatus(userId,userService.LOGIN_STATUS_BLOCK);
+		return "redirect:/admin/dashboard?act=bl";
+	}
+	
+	@GetMapping(value="/admin/user/bulk-delete")
+	public String bulkDeleteUser(@RequestParam("uIds") Integer[] userIds) {
+		userService.bulkDelete(userIds);
+		return "redirect:/admin/dashboard?act=del";
+
+	}
+	
+	@GetMapping("/admin/user/search")
+	public String contactSearch(@RequestParam("freeText") String freeText ,Model m) {
+//		Integer id = (Integer) session.getAttribute("userId");
+		m.addAttribute("userList", userService.search(freeText));
 		return "admin_dashboard";// html
 	}
 

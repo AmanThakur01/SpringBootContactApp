@@ -1,5 +1,7 @@
 package com.mycompany.capp.service;
 
+import java.util.List;
+
 import com.mycompany.capp.domain.User;
 /**
  * This interface declares user-cases or business logic for User entity
@@ -44,5 +46,23 @@ public interface UserService {
 	 * @param newStatus active:1 or block:2
 	 */
 	public void changeLoginStatus(Integer uId,Integer newStatus);
+	
+	/**
+	 * Find all user present in database
+	 * @return  list of users
+	 */
+	public List<User> findAll();
+
+	/**
+	 * 
+	 * @param uId user ID as a parameter which will be deleted
+	 */
+	public void bulkDelete(Integer[] uId);
+/**
+ * Search user list which contain this free text
+ * @param txt this is input from user which is searched in all column in data base
+ * @return
+ */
+	public List<User> search(String txt);
 	
 }
